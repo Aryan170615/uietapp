@@ -87,7 +87,7 @@ export default function Landing() {
           <div className="flex items-center gap-2">
             <TextSplit
                 className="text-4xl font-semibold uppercase"
-                topClassName="text-blue-700"
+                topClassName="text-blue-200"
                 bottomClassName="text-zinc-950 dark:text-zinc-50"
               >
                 UIETMATE
