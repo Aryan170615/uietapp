@@ -231,9 +231,7 @@ export default function CareerAssistance() {
               <DialogHeader>
                 <DialogTitle>Resume Upload</DialogTitle>
               </DialogHeader>
-              <Input type="file" />
-              <Button onClick={() =>{
-                submit("resumeUploaded", true, "Resume submitted")
+              <Button className="cursor-pointer" onClick={() =>{
                 router.push(`career/${modal}`)
               }
               }>
