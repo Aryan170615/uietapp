@@ -38,6 +38,7 @@ export default function CareerAssistance() {
   const [modal, setModal] = useState<Modal>(null)
   const [data, setData] = useState<any>({})
   const router = useRouter()
+  const [value, setValue] = useState("");
 
   /* ---------------- LOAD / SAVE ---------------- */
   useEffect(() => {
@@ -139,7 +140,7 @@ export default function CareerAssistance() {
                     <Badge className="text-black">{s.badge}</Badge>
                   </div>
                   <Button
-                    className="mt-3"
+                    className="mt-3 cursor-pointer"
                     variant="outline"
                     onClick={() => {
                       setModal(s.key as Modal)
@@ -156,7 +157,7 @@ export default function CareerAssistance() {
 
       {/* ---------------- MODALS ---------------- */}
       <Dialog open={!!modal} onOpenChange={() => setModal(null)}>
-        <DialogContent>
+        <DialogContent className="bg-slate-100 ">
           {/* Counsellor */}
           {modal === "counsellor" && (
             <>
@@ -173,7 +174,7 @@ export default function CareerAssistance() {
                   <SelectItem value="evening">Evening</SelectItem>
                 </SelectContent>
               </Select>
-              <Button onClick={() => {
+              <Button className="cursor-pointer" onClick={() => {
                 submit("counsellorBooking", { booked: true }, "Session booked")
                 router.push(`career/${modal}`)
               }
@@ -270,17 +271,21 @@ export default function CareerAssistance() {
               <DialogHeader>
                 <DialogTitle>Select Roadmap</DialogTitle>
               </DialogHeader>
-              <Select>
+              <Select value={value}
+                    onValueChange={(e) => {
+                      setValue(e);
+                    }}>
                 <SelectTrigger><SelectValue placeholder="Choose Role" /></SelectTrigger>
-                <SelectContent>
+                <SelectContent >
                   <SelectItem value="frontend">Frontend Dev</SelectItem>
                   <SelectItem value="backend">Backend Dev</SelectItem>
                   <SelectItem value="data">Data Analyst</SelectItem>
                 </SelectContent>
               </Select>
-              <Button onClick={() =>{
-                submit("roadmap", "selected", "Roadmap saved")
-                router.push(`career/${modal}`)
+              <Button className="cursor-pointer" onClick={() =>{
+                // submit("roadmap", "selected", "Roadmap saved")
+                //get the selected item value
+                router.push(`career/${modal}/${value}`)
               }
               }>
                 Save
