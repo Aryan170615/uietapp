@@ -1,21 +1,19 @@
 import prismaClient from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
-
-export async function GET(req: NextRequest){
-  return NextResponse.json({
-    message : "Hi from main route"
-  })
-}
+import bcrypt from "bcryptjs"
+import { signJwt } from "@/lib/jwt";
 
 export async function POST(req: NextRequest){
-    const body = await req.json()
-    const result = await prismaClient.user.create({
+    const { email, password } = await req.json()
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await prismaClient.user.create({
         data: {
-          email: body.email,
-          password: body.password 
+          email: email,
+          password: hashedPassword 
         }   
       })
-   return NextResponse.json({
-    result
+    const token = signJwt({ id: user.id, email: email})
+    return NextResponse.json({
+    token
   })
 }

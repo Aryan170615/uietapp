@@ -5,6 +5,7 @@ import QuickActions from "@/components/dashboard/quick-actions"
 import RecentActivity from "@/components/dashboard/recent-activity"
 
 export default function Dashboard() {
+  
   return (
     <div className="w-full">
       <DashboardHeader />

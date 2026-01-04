@@ -5,10 +5,12 @@ import { Toaster } from "@/components/ui/sonner"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import Sidebar from "@/components/dashboard/sidebar"
+import { jwtDecode } from "jwt-decode"
 
-interface User {
+
+type AuthPayload = {
+  id: number
   email: string
-  name: string
 }
 
 export default function DashboardLayout({
@@ -17,17 +19,26 @@ export default function DashboardLayout({
   children: React.ReactNode
 }) {
   const router = useRouter()
-  const [user, setUser] = useState<User | null>(null)
+  const [user, setUser] = useState<string>("")
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    const userStr = sessionStorage.getItem("user")
-    if (!userStr) {
-      router.push("/")
-    } else {
-      setUser(JSON.parse(userStr))
+    const token = localStorage.getItem("token")
+
+    if (!token) {
+      router.replace("/")
+      return
     }
-    setIsLoading(false)
+
+    try {
+      const decoded = jwtDecode<AuthPayload>(token)
+      setUser(decoded.email)
+    } catch {
+      localStorage.clear()
+      router.replace("/")
+    } finally {
+      setIsLoading(false)
+    }
   }, [router])
 
   if (isLoading) return null
@@ -38,7 +49,7 @@ export default function DashboardLayout({
       <main className="flex-1 overflow-auto">
         {children}
         <Toaster />
-        </main>
+      </main>
     </div>
   )
 }

@@ -8,7 +8,6 @@ export default function Page() {
   return (
     <div className="relative min-h-screen">
       
-      {/* GLOBAL STAR BACKGROUND */}
       <StarsBackground
         className={cn(
           "fixed inset-0 -z-10 pointer-events-none",
@@ -16,13 +15,7 @@ export default function Page() {
           "bg-[radial-gradient(ellipse_at_bottom,_#f5f5f5_0%,_#fff_100%)]"
         )}
       />
-
-      {/* PAGE CONTENT (NORMAL FLOW) */}
       <Landing />
-
-      {/* Other sections */}
-      {/* <Features /> */}
-      {/* <Footer /> */}
     </div>
   )
 }

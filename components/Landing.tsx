@@ -47,11 +47,12 @@ export default function Landing() {
       password
     })
      if(result.status === 200){  
-       router.replace("/dashboard")
+       localStorage.setItem("token", result.data.token)
+       router.push("/dashboard")
      }
     } catch(e) {
        
-       console.log(e, "Failed to Signup")
+      console.log(e, "Failed to Signup")
     } finally {
       setIsLoading(false)
     } 
@@ -60,11 +61,14 @@ export default function Landing() {
   const handleSignIn = async () => {
   setIsLoading(true)
   try {
-    const res = await axios.post("http://localhost:3000/api/login", {
+    const res = await axios.post("http://localhost:3000/api/auth/signin", {
       email,
       password,
     })
-    router.push("/dashboard")
+    if(res.status === 200){  
+       localStorage.setItem("token", res.data.token)
+       router.push("/dashboard")
+     }
   } catch (e) {
     toast.error("Invalid credentials")
   } finally {

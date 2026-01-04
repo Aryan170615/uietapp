@@ -7,7 +7,7 @@ import { Undo2 } from "lucide-react"
 import { useRouter } from "next/navigation"
 
 export default function CounsellorActivityPage() {
-    const router = useRouter()
+  const router = useRouter()
   const data = useCareerActivities()
   if (!data) return null
 

@@ -1,12 +1,19 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { toast } from "sonner"
+import axios from "axios"
+import { jwtDecode } from "jwt-decode"
 
 type Item = {
   id: number
   title: string
   description: string
   type: "lost" | "found"
+  email: string
+}
+type AuthPayload = {
+  id: number
   email: string
 }
 
@@ -16,11 +23,27 @@ export default function LostAndFoundPage() {
   const [description, setDescription] = useState("")
   const [type, setType] = useState<"lost" | "found">("lost")
   const [email, setEmail] = useState("")
+  const [userEmail, setUserEmail] = useState("")
 
-  function handleSubmit(e: React.FormEvent) {
+  useEffect( ()=> {
+    async function getRecords(){
+      const result = await axios.get('/api/lostfound')
+      const data = result.data;
+      
+      setItems(data)
+    }
+    getRecords()
+   },[])
+
+  async function handleSubmit(e: React.FormEvent) {
+
     e.preventDefault()
     if (!title || !description || !email) return
-
+    try{
+    const result = await axios.post('/api/lostfound', {
+      title, description, type, email
+    })
+    console.log(result)
     setItems([
       {
         id: Date.now(),
@@ -36,7 +59,20 @@ export default function LostAndFoundPage() {
     setDescription("")
     setEmail("")
     setType("lost")
+  } catch(e) {
+    console.log(e)
   }
+  }
+  useEffect(() => {
+      const token = localStorage.getItem("token")
+      if (!token) return
+  
+      const decoded = jwtDecode<AuthPayload>(token)
+      setUserEmail(decoded.email);
+    }, [])
+  
+
+  
 
   async function contactReporter(item: Item) {
   const res = await fetch("/api/send-email", {
@@ -48,7 +84,7 @@ export default function LostAndFoundPage() {
       message: `
 Hi,
 
-Someone is contacting you regarding the ${item.type} item:
+${userEmail} is contacting you regarding the ${item.type} item:
 
 Title: ${item.title}
 Description: ${item.description}
@@ -62,9 +98,21 @@ Lost & Found Team
   })
 
   if (res.ok) {
-    alert("Email sent successfully")
+    toast.success("Email sent successfully", {
+      duration: 4000,
+      style: {
+        background: "rgb(22 163 74)",
+        color: "white",
+      },
+    })
   } else {
-    alert("Failed to send email")
+    toast.error("Failed to send email", {
+      duration: 4000,
+      style: {
+        background: "rgb(239 68 68)",
+        color: "white",
+      },
+    })
   }
 }
 

@@ -18,16 +18,47 @@ model User{
   email     String  @unique
   password  String
   name      String?
+  subject   Subject[]
+  attendance Attendance[]
 }
 
-model Lost{
-  id        Int     @id @default(autoincrement())
+enum Type {
+  lost
+  found
 }
 
-model Found{
-  id        Int     @id @default(autoincrement())
+model LostFound{
+  id            Int     @id @default(autoincrement())
+  title         String
+  description   String
+  type          Type
+  email         String
+  time          DateTime @default(now())
 }
 
-model subjectAttendace {
-  id        Int     @id @default(autoincrement())
+
+model Subject {
+  id         Int     @id @default(autoincrement())
+  name       String
+  userId     Int
+  user       User    @relation(fields: [userId], references: [id])
+  attendance Attendance[]
+  @@unique([name, userId])
+}
+
+enum Status {
+  present
+  absent
+}
+
+model Attendance {
+  id        Int      @id @default(autoincrement())
+  date      DateTime 
+  status    Status   
+  subjectId Int
+  userId    Int
+  subject   Subject  @relation(fields: [subjectId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@unique([date, subjectId, userId])
 }
