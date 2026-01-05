@@ -30,7 +30,7 @@ type Modal =
   | "placement"
   | "mentorship"
   | "resume"
-  | "interview"
+  | "mock-interview"
   | "roadmap"
   | null
 
@@ -39,6 +39,9 @@ export default function CareerAssistance() {
   const [data, setData] = useState<any>({})
   const router = useRouter()
   const [value, setValue] = useState("");
+  const [careerName, setCareerName] = useState("");
+  const [careerEmail, setcareerEmail] = useState("");
+  const [slot, setSlot] = useState("");
 
   /* ---------------- LOAD / SAVE ---------------- */
   useEffect(() => {
@@ -81,7 +84,7 @@ export default function CareerAssistance() {
       action: "Upload Resume",
     },
     {
-      key: "interview",
+      key: "mock-interview",
       title: "Mock Interview",
       icon: Mic,
       badge: data.mockInterview ? "Scheduled" : "Practice",
@@ -131,7 +134,7 @@ export default function CareerAssistance() {
         {services.map((s) => {
           const Icon = s.icon
           return (
-            <Card key={s.key} className="shadow-lg">
+            <Card key={s.key} className="group transition-all duration-200 ease-out hover:-translate-y-1 hover:scale-[1.02] hover:shadow-l shadow-md border border-gray-300">
               <CardContent className="pt-6 flex gap-4">
                 <Icon className="w-8 h-8 text-orange-600" />
                 <div className="flex-1">
@@ -140,7 +143,7 @@ export default function CareerAssistance() {
                     <Badge className="text-black">{s.badge}</Badge>
                   </div>
                   <Button
-                    className="mt-3 cursor-pointer"
+                    className="mt-3 border border-gray-300 cursor-pointer"
                     variant="outline"
                     onClick={() => {
                       setModal(s.key as Modal)
@@ -165,10 +168,10 @@ export default function CareerAssistance() {
                 <DialogTitle>Book Counsellor</DialogTitle>
                 <DialogDescription>30-minute guidance session</DialogDescription>
               </DialogHeader>
-              <Input placeholder="Name" id="name" />
-              <Input placeholder="Email" id="email" />
-              <Select>
-                <SelectTrigger><SelectValue placeholder="Select Slot" /></SelectTrigger>
+              <Input onChange={(e)=>setCareerName(e.target.value)} placeholder="Name" id="name" />
+              <Input onChange={(e)=>setcareerEmail(e.target.value)} placeholder="Email" id="email" />
+              <Select onValueChange={(value)=>setSlot(value)}>
+                <SelectTrigger><SelectValue placeholder="Select Slot"/></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="morning">Morning</SelectItem>
                   <SelectItem value="evening">Evening</SelectItem>
@@ -176,7 +179,7 @@ export default function CareerAssistance() {
               </Select>
               <Button className="cursor-pointer" onClick={() => {
                 submit("counsellorBooking", { booked: true }, "Session booked")
-                router.push(`career/${modal}`)
+                router.push(`career/${modal}/${careerName}/${careerEmail}/${slot}`)
               }
               }>
                 Confirm
@@ -241,7 +244,7 @@ export default function CareerAssistance() {
           )}
 
           {/* Interview */}
-          {modal === "interview" && (
+          {modal === "mock-interview" && (
             <>
               <DialogHeader>
                 <DialogTitle>Mock Interview</DialogTitle>

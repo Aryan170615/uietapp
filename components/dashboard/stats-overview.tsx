@@ -2,13 +2,16 @@
 
 import { Card, CardContent } from "@/components/ui/card"
 import { BarChart3, TrendingUp, Users, BookOpen } from "lucide-react"
+import { useContext } from "react"
+import { useAttendance } from "@/app/context/attendanceContext"
 
 export default function StatsOverview() {
+  const { overallPercentage } = useAttendance()
   const stats = [
     {
       icon: TrendingUp,
       label: "Overall Attendance",
-      value: "90%",
+      value: `${overallPercentage}`,
       change: "+5%",
       color: "from-blue-500 to-cyan-500",
     },

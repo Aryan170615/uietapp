@@ -118,37 +118,38 @@ Lost & Found Team
 
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
+    <div className="min-h-screen  bg-gray-100 p-6">
+      
       <div className="max-w-3xl mx-auto space-y-8">
 
         {/* Header */}
-        <h1 className="text-3xl text-black font-bold text-center">
+        <h1 className="text-3x text-black font-bold text-center">
           🔍 Lost & Found
         </h1>
 
         {/* Form */}
         <form
           onSubmit={handleSubmit}
-          className="bg-white text-black p-6 rounded-xl shadow space-y-3"
+          className="bg-white border border-gray-300 text-black p-6 rounded-xl shadow space-y-3"
         >
           <select
             value={type}
             onChange={(e) => setType(e.target.value as any)}
-            className="w-full border outline-0 p-2 rounded-lg"
+            className="w-full border border-gray-300 outline-0 p-2 rounded-lg"
           >
             <option value="lost">Lost</option>
             <option value="found">Found</option>
           </select>
 
           <input
-            className="w-full border p-2 outline-0 rounded-lg"
+            className="w-full border border-gray-300 p-2 outline-0 rounded-lg"
             placeholder="Item title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
 
           <textarea
-            className="w-full border p-2 rounded-lg outline-0"
+            className="w-full border border-gray-300 p-2 rounded-lg outline-0"
             placeholder="Item description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
@@ -157,7 +158,7 @@ Lost & Found Team
           <input
             type="email"
             required
-            className="w-full border outline-0 p-2 rounded-lg"
+            className="w-full border border-gray-300 outline-0 p-2 rounded-lg"
             placeholder="Your email (not shown publicly)"
             value={email}
             onChange={(e) => setEmail(e.target.value)}

@@ -76,15 +76,16 @@ export default function ResumeReview() {
               {file ? file.name : "Click to upload resume"}
             </span>
             <span className="text-xs text-muted-foreground mt-1">
-              PDF or DOCX (max 3MB)
+              DOCX (max 3MB)
             </span>
 
             <input
               type="file"
-              accept=".pdf,.doc,.docx"
+              accept=".doc,.docx"
               hidden
               onChange={(e) => setFile(e.target.files?.[0] || null)}
             />
+
           </label>
 
           {/* ROLE SELECT */}
